@@ -1,19 +1,20 @@
-import express, { Request, Response } from "express";
+import type { Request, Response } from 'express'
+import cors from 'cors'
 
-import cors from "cors";
-import helmet from "helmet";
+import express from 'express'
+import helmet from 'helmet'
 
-const app = express();
+const app = express()
 
 // middlewares
-app.use(express.json());
-app.use(cors());
-app.use(helmet());
+app.use(express.json())
+app.use(cors())
+app.use(helmet())
 
 // routes
-app.get("/", (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.json({
-    message: "Hello,World!",
-  });
-});
-export default app;
+    message: 'Hello,World!',
+  })
+})
+export default app
