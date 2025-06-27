@@ -8,6 +8,8 @@ export default antfu({
   rules: {
     'no-console': 'off',
     'style/comma-dangle': 'off',
-    'style/brace-style': 'off'
+    'style/brace-style': 'off',
+    'antfu/if-newline': 'off',
+    'node/prefer-global/process': 'off'
   },
 });

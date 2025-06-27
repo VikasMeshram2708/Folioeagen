@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Profiler {
+  id String @id @default(uuid()) @map("_id")
+
+  firstName  String
+  middleName String?
+  lastName   String?
+  email      String  @unique
+  avatar_url String?
+  summary    String
+  dob        String?
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  skills     Skills[]
+  employment Employment[]
+  education  Education[]
+  projects   Projects[]
+
+  @@map("profiler")
+}
+
+model Skills {
+  id String @id @default(uuid()) @map("_id")
+
+  name   String
+  rating Float  @default(3.5)
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  profiler   Profiler? @relation(fields: [profilerId], references: [id])
+  profilerId String?
+
+  @@index([name])
+  @@map("skill")
+}
+
+model Employment {
+  id String @id @default(uuid()) @map("_id")
+
+  title          String
+  companyName    String
+  companyDetails String?
+  myRole         String
+  summary        String?
+
+  // timestamps
+  tenure    DateTime // for how long did you work there
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  profiler   Profiler? @relation(fields: [profilerId], references: [id])
+  profilerId String?
+
+  @@index([title, companyName])
+  @@map("employment")
+}
+
+model Education {
+  id String @id @default(uuid()) @map("_id")
+
+  education      String
+  degreeName     String
+  collegeName    String
+  universityName String
+
+  // timestamps
+  tenure    DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  profiler   Profiler? @relation(fields: [profilerId], references: [id])
+  profilerId String?
+
+  @@index([degreeName, collegeName, education, universityName])
+  @@map("education")
+}
+
+model Projects {
+  id String @id @default(uuid()) @map("_id")
+
+  title        String
+  description  String
+  githubLink   String?
+  videoUrl     String?
+  thumbnailUrl String?
+  websiteUrl   String[]
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  profiler   Profiler? @relation(fields: [profilerId], references: [id])
+  profilerId String?
+
+  @@index([title])
+  @@map("project")
+}
+
+model Accomplishments {
+  id String @id @default(uuid()) @map("_id")
+
+  title       String
+  description String
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([title])
+  @@map("accomplishment")
+}
